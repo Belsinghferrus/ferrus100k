@@ -45,16 +45,25 @@ const emptyDefaults = (nextNumber) => ({
   next_test: '',
 })
 
-export function ReelFormDialog({ open, onOpenChange, reel, pillars = [], series = [], nextNumber = 1 }) {
-  const [isPending, startTransition] = useTransition()
+export function ReelFormDialog({ open, onOpenChange, reel, pillars = [], series = [], nextNumber = 1, fromIdea = null }) {
+    const [isPending, startTransition] = useTransition()
   const [confirmDelete, setConfirmDelete] = useState(false)
   const isEdit = !!reel
 
-  const defaults = useMemo(
-    () => (reel ? { ...reel, pillar_id: reel.pillar_id ?? null, series_id: reel.series_id ?? null } : emptyDefaults(nextNumber)),
-    [reel, nextNumber]
-  )
-
+  const defaults = useMemo(() => {
+    if (reel) return { ...reel, pillar_id: reel.pillar_id ?? null, series_id: reel.series_id ?? null }
+    const base = emptyDefaults(nextNumber)
+    if (fromIdea) {
+      return {
+        ...base,
+        title: fromIdea.idea || '',
+        hook: fromIdea.hook || '',
+        pillar_id: fromIdea.pillar_id ?? null,
+        format: fromIdea.format || null,
+      }
+    }
+    return base
+  }, [reel, nextNumber, fromIdea])
   const form = useForm({ resolver: zodResolver(reelSchema), defaultValues: defaults })
 
   useEffect(() => { if (open) { form.reset(defaults); setConfirmDelete(false) } }, [open, defaults, form])
@@ -80,7 +89,6 @@ export function ReelFormDialog({ open, onOpenChange, reel, pillars = [], series 
       onOpenChange(false)
     })
   }
-
   function onDelete() {
     if (!reel) return
     if (!confirmDelete) { setConfirmDelete(true); return }

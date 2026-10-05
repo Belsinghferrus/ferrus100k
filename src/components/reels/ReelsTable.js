@@ -10,6 +10,8 @@ import { formatNumber, formatDecimal, formatDate, pillarColor } from '@/lib/calc
 import { sortByMetric } from '@/lib/calculations/reels'
 import { Plus, Search, Pencil, Film } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useEffect } from 'react'
+
 
 const SORTS = [
   { key: 'follows_per_1k', label: 'Follows / 1K' },
@@ -20,13 +22,17 @@ const SORTS = [
   { key: 'engagement_rate',label: 'Engagement' },
 ]
 
-export function ReelsTable({ reels, pillars, series }) {
-  const [open, setOpen] = useState(false)
+export function ReelsTable({ reels, pillars, series, fromIdea = null, autoOpen = false }) {
+    const [open, setOpen] = useState(false)
   const [editing, setEditing] = useState(null)
   const [sortKey, setSortKey] = useState('follows_per_1k')
   const [pillarFilter, setPillarFilter] = useState('all')
   const [verdictFilter, setVerdictFilter] = useState('all')
   const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    if (autoOpen && fromIdea) setOpen(true)
+  }, [autoOpen, fromIdea])
 
   const nextNumber = reels.length ? Math.max(...reels.map((r) => r.reel_number || 0)) + 1 : 1
 
@@ -160,13 +166,14 @@ export function ReelsTable({ reels, pillars, series }) {
       </Card>
 
       <ReelFormDialog
-        open={open}
-        onOpenChange={setOpen}
-        reel={editing}
-        pillars={pillars}
-        series={series}
-        nextNumber={nextNumber}
-      />
+  open={open}
+  onOpenChange={(v) => { setOpen(v); if (!v) setEditing(null) }}
+  reel={editing}
+  pillars={pillars}
+  series={series}
+  nextNumber={nextNumber}
+  fromIdea={fromIdea}
+/>
     </>
   )
 }
