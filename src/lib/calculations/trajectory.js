@@ -1,4 +1,4 @@
-import { differenceInCalendarDays, addDays } from 'date-fns'
+import { differenceInCalendarDays, addDays, format } from 'date-fns'
 
 export function computeTrajectory(profile, currentFollowers, today = new Date()) {
   if (!profile) return null
@@ -73,4 +73,28 @@ export function requiredTrajectory(profile) {
     })
   }
   return points
+}
+
+export function buildTrajectoryData(profile, dailyEntries = []) {
+  if (!profile) return []
+  const start = new Date(profile.starting_date)
+  const deadline = new Date(profile.deadline)
+  const totalDays = Math.max(1, differenceInCalendarDays(deadline, start))
+  const totalGrowth = profile.target_followers - profile.starting_followers
+
+  const actualByDate = new Map()
+  actualByDate.set(profile.starting_date, profile.starting_followers)
+  for (const e of dailyEntries) actualByDate.set(e.date, e.end_followers)
+
+  const data = []
+  for (let i = 0; i <= totalDays; i++) {
+    const d = addDays(start, i)
+    const iso = format(d, 'yyyy-MM-dd')
+    data.push({
+      date: iso,
+      required: Math.round(profile.starting_followers + (totalGrowth * i) / totalDays),
+      actual: actualByDate.has(iso) ? actualByDate.get(iso) : null,
+    })
+  }
+  return data
 }
