@@ -1,3 +1,103 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ============================================================
+   Theme variables — top-level, not inside @layer, so they
+   always apply and cannot be purged.
+   ============================================================ */
+:root {
+  --background: 240 10% 4%;           /* #09090B */
+  --foreground: 0 0% 100%;            /* #FFFFFF */
+  --card: 240 5% 7%;                  /* #111113 */
+  --card-foreground: 0 0% 100%;
+  --popover: 240 5% 7%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 47 100% 58%;             /* #FFD02B */
+  --primary-foreground: 240 10% 4%;
+  --secondary: 240 5% 11%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 240 5% 11%;
+  --muted-foreground: 240 5% 65%;     /* #A1A1AA */
+  --accent: 240 4% 14%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;           /* #EF4444 */
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 71% 45%;             /* #22C55E */
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;              /* #F59E0B */
+  --warning-foreground: 240 10% 4%;
+  --border: 240 4% 16%;               /* #27272A */
+  --input: 240 4% 16%;
+  --ring: 47 100% 58%;
+  --radius: 0.5rem;
+
+  color-scheme: dark;
+}
+
+/* Hard-coded fallbacks on html/body — nothing can purge these */
+html {
+  background-color: #09090B;
+  color: #FFFFFF;
+}
+body {
+  background-color: #09090B;
+  color: #FFFFFF;
+  font-feature-settings: "cv02","cv03","cv04","cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   Base layer — global defaults
+   ============================================================ */
+@layer base {
+  * {
+    border-color: #27272A;
+  }
+
+  /* Radix portals (Dialog, Dropdown, Select, Popover) render to body.
+     Force dark theme on them in case vars fail. */
+  [data-radix-popper-content-wrapper],
+  [role="dialog"],
+  [role="menu"],
+  [role="listbox"] {
+    color: #FFFFFF;
+  }
+
+  /* Native inputs inherit dark theme */
+  input, textarea, select {
+    color: #FFFFFF;
+    background-color: transparent;
+  }
+  input::placeholder, textarea::placeholder {
+    color: #71717A;
+  }
+}
+
+/* ============================================================
+   Utility polish
+   ============================================================ */
+@layer utilities {
+  .tabular-nums { font-variant-numeric: tabular-nums; }
+  .text-balance  { text-wrap: balance; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #09090B; }
+::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 5px;
+  border: 2px solid #09090B;
+}
+::-webkit-scrollbar-thumb:hover { background: #3F3F46; }
+
+/* Selection */
+::selection { background: rgba(255, 208, 43, 0.3); color: #FFFFFF; }
+
+/* Focus rings — yellow accent */
+*:focus-visible {
+  outline: 2px solid rgba(255, 208, 43, 0.5);
+  outline-offset: 2px;
+}
