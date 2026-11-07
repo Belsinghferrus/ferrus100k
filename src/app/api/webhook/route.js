@@ -12,13 +12,10 @@ export async function POST(req) {
     const rawBody = await req.text()
     const signature = req.headers.get('x-signature')
     
-    // 1. Verify the request actually came from Lemon Squeezy
     if (process.env.LEMON_SQUEEZY_WEBHOOK_SECRET && signature) {
       const hmac = crypto.createHmac('sha256', process.env.LEMON_SQUEEZY_WEBHOOK_SECRET)
       const digest = Buffer.from(hmac.update(rawBody).digest('hex'), 'utf8')
-      const signatureBuffer = Buffer.from(signature, 'utf8')
-      
-      if (!crypto.timingSafeEqual(digest, signatureBuffer)) {
+      if (!crypto.timingSafeEqual(digest, Buffer.from(signature, 'utf8'))) {
         return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
       }
     }
@@ -26,30 +23,17 @@ export async function POST(req) {
     const payload = JSON.parse(rawBody)
     const eventName = payload.meta.event_name
 
-    // 2. Listen for successful subscription
     if (eventName === 'subscription_created' || eventName === 'order_created') {
-      // Lemon Squeezy passes custom data if we set it in the URL
-      const userEmail = payload.meta.custom_data?.email || payload.data.attributes.user_email
+      // We get the user_id directly from the custom data we passed in the URL!
+      const userId = payload.meta.custom_data?.user_id
 
-      if (userEmail) {
-        // Find the user ID by email
-        const { data: userData, error: userError } = await supabaseAdmin
+      if (userId) {
+        await supabaseAdmin
           .from('profiles')
-          .select('id')
-          .eq('username', userEmail.split('@')[0]) // Fallback if you store username like this
+          .update({ subscription_status: 'active' })
+          .eq('id', userId)
           
-        // Actually, it's safer to use Supabase Auth admin API
-        const { data: { users }, error: authError } = await supabaseAdmin.auth.admin.listUsers()
-        const user = users.find(u => u.email === userEmail)
-
-        if (user) {
-          await supabaseAdmin
-            .from('profiles')
-            .update({ subscription_status: 'active' })
-            .eq('id', user.id)
-            
-          console.log(`✅ User ${userEmail} upgraded to Active!`)
-        }
+        console.log(`✅ User ${userId} upgraded to Active!`)
       }
     }
 

@@ -36,8 +36,9 @@ export function PricingPlans({ isIndia }) {
   const region = isIndia ? 'india' : 'global'
   const price = PRICES[region][billingCycle]
   const symbol = PRICES[region].symbol
-  const checkoutLink = LINKS[region][billingCycle]
-
+  const baseLink = LINKS[region][billingCycle]
+  const checkoutLink = `${baseLink}?checkout[custom][user_id]=${userId}`
+  
   const features = [
     '100K Trajectory Dashboard',
     'Unlimited Reel Analytics',
