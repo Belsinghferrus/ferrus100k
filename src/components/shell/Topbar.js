@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { CheckInDialog } from '@/components/checkin/CheckInDialog'
+import { ThemeToggle } from '@/components/shell/ThemeToggle'
 import { LogOut, CheckCircle2, Loader2 } from 'lucide-react'
 
 export function Topbar({ profile, email, reels = [], todayEntry = null }) {
@@ -24,7 +25,7 @@ export function Topbar({ profile, email, reels = [], todayEntry = null }) {
       <header className="sticky top-0 z-30 h-16 bg-background/80 backdrop-blur border-b border-border flex items-center justify-between px-4 md:px-8">
         <div className="flex items-center gap-2 md:hidden">
           <span className="w-2 h-2 rounded-full bg-primary" />
-          <span className="text-xs font-semibold tracking-[0.25em]">FERRUS 100K</span>
+          <span className="text-xs font-bold tracking-[0.15em]">INSTA GROWTH</span>
         </div>
 
         <div className="hidden md:block text-sm text-muted-foreground">
@@ -45,17 +46,20 @@ export function Topbar({ profile, email, reels = [], todayEntry = null }) {
             {email}
           </span>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleSignOut}
-            disabled={signingOut}
-            aria-label="Sign out"
-          >
-            {signingOut
-              ? <Loader2 className="h-4 w-4 animate-spin" />
-              : <LogOut className="h-4 w-4" />}
-          </Button>
+          <div className="flex items-center gap-1 border-l border-border pl-2 ml-1">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleSignOut}
+              disabled={signingOut}
+              aria-label="Sign out"
+            >
+              {signingOut
+                ? <Loader2 className="h-4 w-4 animate-spin" />
+                : <LogOut className="h-4 w-4" />}
+            </Button>
+          </div>
         </div>
       </header>
 

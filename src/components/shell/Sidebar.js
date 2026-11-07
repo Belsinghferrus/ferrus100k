@@ -2,7 +2,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { LayoutDashboard, TrendingUp, Film, CalendarDays, Lightbulb,
+import {
+  LayoutDashboard, TrendingUp, Film, CalendarDays, Lightbulb,
   Sparkles, Zap, FlaskConical, BarChart3, Settings
 } from 'lucide-react'
 
@@ -25,13 +26,15 @@ export function Sidebar() {
     <aside className="hidden md:flex fixed inset-y-0 left-0 w-64 flex-col bg-card border-r border-border z-40">
       {/* Brand */}
       <div className="h-16 flex items-center px-5 border-b border-border">
-        <Link href="/dashboard" className="flex items-center gap-2 group">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-ping" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-          </span>
-          <span className="text-sm font-semibold tracking-[0.25em]">FERRUS</span>
-          <span className="text-[10px] text-primary tracking-[0.25em] font-semibold">100K</span>
+        <Link href="/dashboard" className="flex flex-col group">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+            </span>
+            <span className="text-sm font-bold tracking-[0.15em]">INSTA GROWTH</span>
+          </div>
+          <span className="text-[9px] text-primary tracking-[0.3em] font-semibold ml-4 mt-0.5">LAB</span>
         </Link>
       </div>
 

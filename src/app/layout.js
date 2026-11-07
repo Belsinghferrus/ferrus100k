@@ -1,34 +1,31 @@
 import { Inter } from 'next/font/google'
 import { Toaster } from 'sonner'
+import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata = {
-  title: 'Ferrus 100K Command Center',
-  description: 'Personal Instagram growth operating system',
+  title: 'Insta Growth Lab — Command Center',
+  description: 'The operating system for serious Instagram creators.',
 }
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="font-sans">
-        {children}
-        <Toaster
-          theme="dark"
-          position="top-right"
-          closeButton
-          richColors
-          toastOptions={{
-            style: {
-              background: '#111113',
-              border: '1px solid #27272A',
-              color: '#FFFFFF',
-              fontSize: '13px',
-            },
-            className: 'font-sans',
-          }}
-        />
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          {children}
+          <Toaster 
+            theme="system" 
+            position="top-right" 
+            closeButton 
+            richColors 
+            toastOptions={{
+              className: 'font-sans',
+            }}
+          />
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -1,19 +1,22 @@
 import { Suspense } from 'react'
 import { LoginForm } from '@/components/auth/LoginForm'
 
-export const metadata = { title: 'Sign in — Ferrus 100K' }
+export const metadata = { title: 'Sign in — Insta Growth Lab' }
 
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="inline-flex items-center gap-2 mb-3">
-            <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_#FFD02B]" />
-            <span className="text-xs tracking-[0.3em] text-muted-foreground">FERRUS</span>
+          <div className="inline-flex flex-col items-center gap-1 mb-4">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_#FFD02B]" />
+              <span className="text-sm font-bold tracking-[0.15em]">INSTA GROWTH</span>
+            </div>
+            <span className="text-[10px] text-primary tracking-[0.3em] font-semibold">LAB</span>
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight">100K Command Center</h1>
-          <p className="mt-2 text-sm text-muted-foreground">25,200 → 100,000 · Dec 31, 2026</p>
+          <h1 className="text-2xl font-semibold tracking-tight mt-2">Command Center</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Log in to your growth operating system.</p>
         </div>
         <Suspense fallback={<LoginFormSkeleton />}>
           <LoginForm />

@@ -31,7 +31,6 @@ DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayNam
 const DropdownMenuSubContent = React.forwardRef(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.SubContent
     ref={ref}
-    style={{ backgroundColor: '#111113', color: '#FFFFFF' }}
     className={cn(
       "z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover text-popover-foreground p-1 shadow-lg",
       "data-[state=open]:animate-in data-[state=closed]:animate-out",
@@ -47,7 +46,6 @@ const DropdownMenuContent = React.forwardRef(({ className, sideOffset = 4, ...pr
     <DropdownMenuPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
-      style={{ backgroundColor: '#111113', color: '#FFFFFF' }}
       className={cn(
         "z-50 min-w-[10rem] overflow-hidden rounded-md border border-border",
         "bg-popover text-popover-foreground p-1 shadow-2xl",
