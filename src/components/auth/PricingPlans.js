@@ -30,7 +30,7 @@ const PRICES = {
   }
 }
 
-export function PricingPlans({ isIndia }) {
+export function PricingPlans({ isIndia, userId }) {
   const [billingCycle, setBillingCycle] = useState('yearly')
   
   const region = isIndia ? 'india' : 'global'
